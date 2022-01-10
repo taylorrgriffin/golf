@@ -1,6 +1,12 @@
-import { DeckCollection } from "./DeckCollection";
+import { Player } from "./Player";
+import { GameStatus } from "./GameStatus";
+import { IDeckCollection } from "../intefaces/IDeckCollection";
 
-export interface Game {
-  drawPile: DeckCollection,
-  discardPile: DeckCollection,
+export interface IGame {
+  players: Player[],
+  drawPile: IDeckCollection,
+  discardPile: IDeckCollection,
+  status: GameStatus,
+  round: number,
+  numberOfRounds: number
 }

@@ -1,7 +1,7 @@
-import { Game } from "./Game";
+import { IGame } from "./Game";
 import { Rule } from "./Rule";
 
 export interface Context {
-  gameState: Game,
+  gameState: IGame,
   rules: Rule[]
 }
