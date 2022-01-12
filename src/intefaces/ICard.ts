@@ -3,7 +3,7 @@ import { CardValue } from "../models/ CardValue";
 import { DeckDesign } from "../models/DeckDesign";
 
 export interface ICard {
-  suit: Suit;
+  suit: Suit | null;
   value: CardValue;
   faceDown: Boolean;
   design: DeckDesign;

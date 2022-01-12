@@ -4,12 +4,12 @@ import { CardValue } from "./ CardValue";
 import { DeckDesign } from "./DeckDesign";
 
 export class Card implements ICard {
-  suit: Suit;
+  suit: Suit | null;
   value: CardValue;
   faceDown: Boolean;
   design: DeckDesign;
   
-  constructor(suit : Suit, value : CardValue, faceDown : Boolean, design: DeckDesign) {
+  constructor(suit : Suit | null, value : CardValue, faceDown : Boolean, design: DeckDesign) {
     this.suit = suit;
     this.value = value;
     this.faceDown = faceDown;

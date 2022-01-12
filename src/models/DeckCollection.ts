@@ -1,5 +1,6 @@
-import { IDeckCollection } from "../intefaces/IDeckCollection";
 import { Card } from "./Card";
+import { shuffleCards } from '../utilities/shuffle';
+import { IDeckCollection } from "../intefaces/IDeckCollection";
 
 export class DeckCollection implements IDeckCollection {
   cards: Card[];
@@ -25,5 +26,9 @@ export class DeckCollection implements IDeckCollection {
 
   discard(card: Card): void {
     this.cards.push(card);
+  }
+
+  shuffle() : void {
+    this.cards = shuffleCards(this.cards);
   }
 }

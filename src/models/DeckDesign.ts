@@ -1,5 +1,5 @@
 export enum DeckDesign {
-  Democrat,
-  Huskers,
-  Bicycle
+  Democrat = "Democrat",
+  Huskers = "Huskers",
+  Bicycle = "Bicycle"
 }

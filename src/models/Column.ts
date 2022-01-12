@@ -4,9 +4,11 @@ import { CardPosition } from "./CardPosition";
 
 export class Column implements IColumn {
   cards: [Card, Card, Card];
+  isCleared: Boolean;
 
-  constructor(cards: [Card, Card, Card]) {
+  constructor(cards: [Card, Card, Card], isCleared : Boolean) {
     this.cards = cards;
+    this.isCleared = isCleared;
   }
 
   replace(position: CardPosition, card: Card) : Card {
@@ -37,5 +39,9 @@ export class Column implements IColumn {
     return (!this.cards[CardPosition.Top.valueOf()].faceDown)
     && (!this.cards[CardPosition.Middle.valueOf()].faceDown)
     && (!this.cards[CardPosition.Bottom.valueOf()].faceDown)
+  }
+
+  clear() : void {
+    this.isCleared = true;
   }
 }
