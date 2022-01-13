@@ -1,9 +1,11 @@
 import { IDeckCollection } from "../intefaces/IDeckCollection";
 import { IGame } from "../intefaces/IGame";
+import { generateJoinCode } from "../utilities/joinCode";
 import { GameStatus } from "./GameStatus";
 import { Player } from "./Player";
 
 export class Game implements IGame {
+  id: string;
   players: Player[];
   drawPile: IDeckCollection;
   discardPile: IDeckCollection;
@@ -12,6 +14,7 @@ export class Game implements IGame {
   numberOfRounds: number;
 
   constructor(players : Player[], drawPile: IDeckCollection, discardPile: IDeckCollection, status: GameStatus, round: number, numberOfRounds: number) {
+    this.id = generateJoinCode();
     this.players = players;
     this.drawPile = drawPile;
     this.discardPile = discardPile;

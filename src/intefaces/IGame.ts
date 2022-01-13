@@ -3,6 +3,7 @@ import { GameStatus } from "../models/GameStatus";
 import { IDeckCollection } from "../intefaces/IDeckCollection";
 
 export interface IGame {
+  id: string,
   players: Player[],
   drawPile: IDeckCollection,
   discardPile: IDeckCollection,
