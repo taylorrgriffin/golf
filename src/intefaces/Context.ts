@@ -1,4 +1,4 @@
-import { IGame } from "../intefaces/IGame";
+import { IGame } from "./IGame";
 import { Rule } from "./Rule";
 
 export interface Context {

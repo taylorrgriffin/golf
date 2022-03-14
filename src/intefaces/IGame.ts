@@ -1,10 +1,10 @@
-import { Player } from "../models/Player";
 import { GameStatus } from "../models/GameStatus";
 import { IDeckCollection } from "../intefaces/IDeckCollection";
+import { IPlayer } from "./IPlayer";
 
 export interface IGame {
   id: string,
-  players: Player[],
+  players: IPlayer[],
   drawPile: IDeckCollection,
   discardPile: IDeckCollection,
   status: GameStatus,
