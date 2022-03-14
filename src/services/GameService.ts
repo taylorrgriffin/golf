@@ -4,6 +4,7 @@ import db from '../utilities/firebase';
 import { Game } from '../models/Game';
 import { CardService } from './CardService';
 import { GameStatus } from '../models/GameStatus';
+import { IGame } from '../intefaces/IGame';
 
 export class GameService {
   constructor() {
@@ -21,7 +22,7 @@ export class GameService {
     return game;
   }
 
-  async findGame(joinCode: string) : Promise<Game|null> {
+  async findGame(joinCode: string) : Promise<IGame|null> {
     let docRef = doc(db, 'games', joinCode);
     const docSnap = await getDoc(docRef);
     const data = docSnap.exists() ? docSnap.data() : null
@@ -29,9 +30,16 @@ export class GameService {
       return null; // just in-case data in undefined, this prevents us from having to add a third return type
     }
     else {
-      console.info(data);
-      // TODO: transform data into an instance of Game
-      return null;
+      let game : IGame = {
+        id: data.id,
+        players: data.players,
+        drawPile: data.drawPile,
+        discardPile: data.discardPile,
+        status: data.status,
+        round: data.round,
+        numberOfRounds: data.numberOfRounds
+      };
+      return game;
     }
   }
 }

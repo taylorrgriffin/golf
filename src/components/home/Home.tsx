@@ -4,30 +4,38 @@ import { Button, FilledInput, FormControl, InputLabel } from '@mui/material';
 
 import { Game } from '../../models/Game';
 import { GameService } from '../../services/GameService';
+import { useNavigate } from 'react-router-dom';
 
 export const Home = () => {
   const [game, setGame] = useState<Game>();
   const [joinCode, setJoinCode] = useState('');
 
+  const navigate = useNavigate();
   const gameService = new GameService();
+
+  const goToLobby = (gameId:string) => {
+    navigate(`/lobby/${gameId}`);
+  }
 
   const joinGame = async () => {
     let game = await gameService.findGame(joinCode);
     if (game == null) {
+      // TODO: throw this in error banner
       console.info("Could not find game");
     }
     else {
-      setGame(game);
+      goToLobby(game.id);
     }
   }
 
   const createGame = async () => {
     let game = await gameService.initializeGame();
     if (game == null) {
+      // TODO: throw this in error banner
       console.info("Could not create game");
     }
     else {
-      setGame(game);
+      goToLobby(game.id);
     }
   }
 
@@ -35,7 +43,7 @@ export const Home = () => {
     <div style={styles.container}>
       <div style={styles.topHalf}>
           <span>
-            <Button variant="contained" color="primary" onClick={async() => {createGame()}}>
+            <Button variant="contained" color="primary" onClick={createGame}>
               Create Game
             </Button>
           </span>
@@ -44,10 +52,9 @@ export const Home = () => {
         <FormControl variant="filled">
           <InputLabel htmlFor="component-filled">Join Code</InputLabel>
           <FilledInput id="component-filled" value={joinCode} onChange={async (e) => {
-            e.target.value = e.target.value.toUpperCase();
-            setJoinCode(e.target.value) }} />
+            setJoinCode(e.target.value.toUpperCase()) }} />
         </FormControl>
-        <Button variant="contained" color="primary" style={{ width: '190px', marginTop: '20px' }} onClick={()=>{joinGame()}}>
+        <Button variant="contained" color="primary" style={{ width: '190px', marginTop: '20px' }} onClick={joinGame}>
           Join Game
         </Button>
       </div>

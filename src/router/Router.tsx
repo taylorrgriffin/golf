@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 
 import { Home } from '../components/home/Home';
+import { Lobby } from '../components/lobby/Lobby';
 import Header from "../components/shared/Header";
 import { PageNotFound } from '../components/shared/PageNotFound';
 
@@ -15,6 +16,7 @@ const Router = () => {
         <Header/>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/lobby/:gameId" element={<Lobby/>} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
       </BrowserRouter>
