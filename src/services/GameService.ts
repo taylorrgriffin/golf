@@ -1,10 +1,11 @@
-import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 
 import db from '../utilities/firebase';
 import { Game } from '../models/Game';
 import { CardService } from './CardService';
 import { GameStatus } from '../models/GameStatus';
 import { IGame } from '../intefaces/IGame';
+import { IPlayer } from '../intefaces/IPlayer';
 
 export class GameService {
   constructor() {
@@ -13,13 +14,29 @@ export class GameService {
 
   cardService: CardService;
 
-  async initializeGame() : Promise<Game|null> {
+  async initializeGame(players:IPlayer[]) : Promise<Game|null> {
     let drawPile = this.cardService.getDrawPile();
     let discardPile = this.cardService.getDiscardPile();
-    let game = new Game([], drawPile, discardPile, GameStatus.WaitingForPlayers, 0, 2);
+    let game = new Game(players, drawPile, discardPile, GameStatus.WaitingForPlayers, 0, 2);
     const docRef = doc(db, 'games', game.id);
     await setDoc(docRef, JSON.parse(JSON.stringify(game)));
     return game;
+  }
+
+  async addPlayer(joinCode: string, newPlayer: IPlayer) : Promise<boolean> {
+    let docRef = doc(db, 'games', joinCode);
+
+    let game = await this.findGame(joinCode);
+    if (game === null) {
+      console.error(`Unable to find game with id: ${joinCode}`);
+      return false;
+    }
+    else {
+      await updateDoc(docRef, {
+        players: [...game.players, newPlayer]
+      });
+      return true;
+    }
   }
 
   async findGame(joinCode: string) : Promise<IGame|null> {

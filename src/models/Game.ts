@@ -1,7 +1,7 @@
 import { IDeckCollection } from "../intefaces/IDeckCollection";
 import { IGame } from "../intefaces/IGame";
 import { IPlayer } from "../intefaces/IPlayer";
-import { generateJoinCode } from "../utilities/joinCode";
+import { generateJoinCode } from "../utilities/codes";
 import { GameStatus } from "./GameStatus";
 
 export class Game implements IGame {
