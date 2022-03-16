@@ -14,10 +14,10 @@ export class Deck implements IDeck {
     for (let suit in Suit) {
       if (isNaN(Number(suit))) {
         for (let value in CardValue) {
-          if (value == CardValue.Joker) {
+          if (value === CardValue.Joker) {
             continue; // add these later since they have no suit and we use a different number of them
           }
-          cards.push({ suit: <Suit> suit, value: <CardValue> value, faceDown: true, design });
+          cards.push({ suit: suit as Suit, value: value as CardValue, faceDown: true, design });
         }
       }
     }

@@ -11,7 +11,7 @@ export class DeckCollection implements IDeckCollection {
 
   draw(): ICard {
     let topCard = this.cards.pop();
-    if (topCard == undefined) {
+    if (topCard === undefined) {
       throw Error("Error! We need more cards.");
     }
     return topCard;

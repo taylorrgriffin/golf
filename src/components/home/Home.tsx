@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { Button, FilledInput, FormControl, InputLabel } from '@mui/material';
 
-import { Game } from '../../models/Game';
 import { GameService } from '../../services/GameService';
 import { useNavigate } from 'react-router-dom';
 import { IPlayer } from '../../intefaces/IPlayer';
@@ -11,7 +10,6 @@ import { useAppContext } from '../../App.context';
 
 export const Home = () => {
   const { dispatch } = useAppContext();
-  const [game, setGame] = useState<Game>();
   const [nickname, setNickname] = useState<string>('');
   const [nicknameConfirmed, setNicknameConfirmed] = useState(false);
   const [joinCode, setJoinCode] = useState('');

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { onSnapshot, collection, doc, setDoc, getDoc} from 'firebase/firestore';
+import { onSnapshot, collection, doc } from 'firebase/firestore';
 
 import db from '../../utilities/firebase';
 import { IPlayer } from '../../intefaces/IPlayer';
@@ -12,17 +12,14 @@ import { GameService } from '../../services/GameService';
 import { GameStatus } from '../../models/GameStatus';
 import { ICard } from '../../intefaces/ICard';
 import { IDeckCollection } from '../../intefaces/IDeckCollection';
-import { DeckCollection } from '../../models/DeckCollection';
-import { pipeline } from 'stream';
-import { IGame } from '../../intefaces/IGame';
 import { Column } from '../../models/Column';
 import { Game } from '../../models/Game';
+import { Hand } from '../../models/Hand';
 
 const Lobby = () => {
   const { state } = useAppContext();
-  // const [drawPile, setDrawPile] = useState<IDeckCollection|null>(null);
+  const navigate = useNavigate();
   const [gameState, setGameState] = useState<Game|null>(null);
-  // const [players, setPlayers] = useState<IPlayer[]>([]);
   // TODO: try path without gameid later
   const { gameId } = useParams<{gameId: string}>() as { gameId: string };
   const game = doc(collection(db, 'games'), gameId);
@@ -35,40 +32,44 @@ const Lobby = () => {
       return;
     }
 
-    let res = await gameService.updateGame(gameId, { ...gameState, status: GameStatus.Dealing });
+    gameState.status = GameStatus.Dealing;
+    let res = await gameService.updateGame(gameId, gameState);
     if (!res) {
       return;
     }
 
-        // let hands = [];
-        // gameState.players.forEach((player) => {
-        //   if (gameState.drawPile === null) {
-        //     console.error(`Can't deal cards, the draw pile is empty!`);
-        //   }
-        //   else {
-        //     // TODO: parameterize 12 later
-        //     let hand = draw(gameState.drawPile, 12);
-        //     // setPlayerHand(hand, player);
-        //     console.info(gameState.drawPile.cards.length);
-        //   }
-        // })
-        // for (let i = 0; i < gameState.players.length; i++) {
+    if (gameState.drawPile == null) {
+      console.error(`Can't draw cards for players, draw pile is null.`);
+      return;
+    }
 
+    gameState.players.forEach((player) => {
+      let hand = draw(gameState.drawPile, 12);
+      setPlayerHand(hand, player);
+    })
 
-        // }
+    res = await gameService.updateGame(gameId, gameState);
+    if (!res) {
+      return;
+    }
+
+    gameState.status = GameStatus.Flipping;
+    res = await gameService.updateGame(gameId, gameState);
   }
 
-  // const setPlayerHand = (hand: ICard[], player: IPlayer) => {
-  //   let columns = [];
-  //   for (let i = 0; i < (hand.length / 3); i++) {
-  //     // columns.push(new Column([new Card(hand[i*3]), hand[i*3 + 1], hand[i*3 + 2]], false));
-  //   }
-  // }
+  const setPlayerHand = (hand: ICard[], player: IPlayer) => {
+    let columns = [];
+    for (let i = 0; i < (hand.length / 3); i++) {
+      columns.push(new Column([hand[i*3], hand[i*3 + 1], hand[i*3 + 2]], false));
+    }
+
+    player.hand = new Hand(columns);
+  }
 
   // TODO: unit test this function later
-  // const draw = (pile: IDeckCollection, num: number) : ICard[] => {
-  //   return pile.cards.splice(-1 * num, num);
-  // }
+  const draw = (pile: IDeckCollection, num: number) : ICard[] => {
+    return pile.cards.splice(-1 * num, num);
+  }
 
   useEffect(() => {
     onSnapshot(game, (snapshot) => {
@@ -79,6 +80,14 @@ const Lobby = () => {
       else {
         if (data.status === GameStatus.WaitingForPlayers) {
           setGameState(data as Game);
+        }
+        else if (data.status === GameStatus.Dealing) {
+          // do nothing if the game state changes while the dealing process is taking place
+          // this is to eliminate the possibilty that a player joins during the initial deal
+        }
+        else if (data.status === GameStatus.Flipping) {
+          // once we're done dealing and we're ready to flip cards, move to the next screen
+          navigate(`/game/${gameId}`, { state: { self: state.user } });
         }
       }
     }, (err) => {

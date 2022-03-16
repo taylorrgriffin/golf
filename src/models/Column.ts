@@ -23,16 +23,16 @@ export class Column implements IColumn {
 
   isMatched() : Boolean {
     return this.cards[CardPosition.Top.valueOf()].value
-      == this.cards[CardPosition.Middle.valueOf()].value
+      === this.cards[CardPosition.Middle.valueOf()].value
       && this.cards[CardPosition.Middle.valueOf()].value 
-      == this.cards[CardPosition.Bottom.valueOf()].value
+      === this.cards[CardPosition.Bottom.valueOf()].value
   }
 
   isMatchedSuits() : Boolean {
     return this.cards[CardPosition.Top.valueOf()].suit
-    == this.cards[CardPosition.Middle.valueOf()].suit
+    === this.cards[CardPosition.Middle.valueOf()].suit
     && this.cards[CardPosition.Middle.valueOf()].suit 
-    == this.cards[CardPosition.Bottom.valueOf()].suit
+    === this.cards[CardPosition.Bottom.valueOf()].suit
   }
 
   isFullyFaceUp() : Boolean {

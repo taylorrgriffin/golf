@@ -6,6 +6,7 @@ import {
 
 import { Home } from '../components/home/Home';
 import { Lobby } from '../components/lobby/Lobby';
+import { GameScreen } from '../components/game/Game';
 import Header from "../components/shared/Header";
 import { PageNotFound } from '../components/shared/PageNotFound';
 
@@ -17,6 +18,7 @@ const Router = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/lobby/:gameId" element={<Lobby/>} />
+            <Route path="/game/:gameId" element={<GameScreen/>} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
       </BrowserRouter>
