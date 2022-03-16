@@ -24,19 +24,30 @@ export class GameService {
   }
 
   async addPlayer(joinCode: string, newPlayer: IPlayer) : Promise<boolean> {
-    let docRef = doc(db, 'games', joinCode);
-
-    let game = await this.findGame(joinCode);
-    if (game === null) {
-      console.error(`Unable to find game with id: ${joinCode}`);
+    try {
+      let game = await this.findGame(joinCode);
+      if (game === null || game === undefined) {
+        return false;
+      }
+      await this.updateGame(joinCode, { ...game, players: [ ...game.players, newPlayer ] });
+    } catch(e) {
+      console.error(`Unable to add player to game ${joinCode}`);
       return false;
     }
-    else {
-      await updateDoc(docRef, {
-        players: [...game.players, newPlayer]
-      });
-      return true;
+
+    return true;
+  }
+
+  async updateGame(joinCode: string, gameState: Game) : Promise<boolean> {
+    let docRef = doc(db, 'games', joinCode);
+    try {
+      await updateDoc(docRef, JSON.parse(JSON.stringify(gameState)));
+    } catch(e) {
+      console.error(`Unable to update game: ${joinCode}`);
+      return false;
     }
+
+    return true;
   }
 
   async findGame(joinCode: string) : Promise<IGame|null> {

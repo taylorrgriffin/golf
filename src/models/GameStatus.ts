@@ -1,5 +1,8 @@
 export enum GameStatus {
   WaitingForPlayers,
-  Started,
-  Finished
+  Dealing,
+  Flipping,
+  InProgress,
+  Finished,
+  Error
 }
