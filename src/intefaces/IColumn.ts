@@ -1,6 +1,6 @@
-import { Card } from "../models/Card";
+import { ICard } from "./ICard";
 
 export interface IColumn {
-  cards: [Card, Card, Card],
+  cards: [ICard, ICard, ICard],
   isCleared: Boolean
 }

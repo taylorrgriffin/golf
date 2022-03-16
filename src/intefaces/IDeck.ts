@@ -1,5 +1,5 @@
-import { Card } from "../models/Card";
+import { ICard } from "./ICard";
 
 export interface IDeck {
-  cards: Card[]
+  cards: ICard[]
 }

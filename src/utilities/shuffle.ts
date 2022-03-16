@@ -1,7 +1,7 @@
-import { Card } from "../models/Card";
+import { ICard } from "../intefaces/ICard";
 
 // credit: https://stackoverflow.com/a/2450976
-export function shuffleCards(array: Card[]) {
+export function shuffleCards(array: ICard[]) {
   let currentIndex = array.length, randomIndex;
 
   // While there remain elements to shuffle...

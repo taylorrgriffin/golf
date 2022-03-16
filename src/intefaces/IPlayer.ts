@@ -1,4 +1,4 @@
-import { Card } from "../models/Card";
+import { ICard } from "./ICard";
 import { Hand } from "../models/Hand";
 
 export interface IPlayer {
@@ -7,7 +7,7 @@ export interface IPlayer {
   isHost: boolean,
   hand: Hand | null,
   isOut: Boolean,
-  drawnCard: Card | null,
+  drawnCard: ICard | null,
   roundScore: Number,
   gameScore: number
 }

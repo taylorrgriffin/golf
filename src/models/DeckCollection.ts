@@ -1,15 +1,15 @@
-import { Card } from "./Card";
+import { ICard } from "../intefaces/ICard";
 import { shuffleCards } from '../utilities/shuffle';
 import { IDeckCollection } from "../intefaces/IDeckCollection";
 
 export class DeckCollection implements IDeckCollection {
-  cards: Card[];
+  cards: ICard[];
 
-  constructor(cards: Card[]) {
+  constructor(cards: ICard[]) {
     this.cards = cards
   }
 
-  draw(): Card {
+  draw(): ICard {
     let topCard = this.cards.pop();
     if (topCard == undefined) {
       throw Error("Error! We need more cards.");
@@ -17,14 +17,14 @@ export class DeckCollection implements IDeckCollection {
     return topCard;
   }
 
-  peek(): Card {
+  peek(): ICard {
     if (this.cards.length < 1) {
       throw Error("Error! We need more cards.");
     }
     return this.cards[this.cards.length - 1];
   }
 
-  discard(card: Card): void {
+  discard(card: ICard): void {
     this.cards.push(card);
   }
 

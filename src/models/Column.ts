@@ -1,22 +1,22 @@
-import { Card } from "./Card";
+import { ICard } from "../intefaces/ICard";
 import { IColumn } from "../intefaces/IColumn";
 import { CardPosition } from "./CardPosition";
 
 export class Column implements IColumn {
-  cards: [Card, Card, Card];
+  cards: [ICard, ICard, ICard];
   isCleared: Boolean;
 
-  constructor(cards: [Card, Card, Card], isCleared : Boolean) {
+  constructor(cards: [ICard, ICard, ICard], isCleared : Boolean) {
     this.cards = cards;
     this.isCleared = isCleared;
   }
 
-  replace(position: CardPosition, card: Card) : Card {
+  replace(position: CardPosition, card: ICard) : ICard {
     let index = position.valueOf();
     
     let tmp = this.cards[index];
     this.cards[index] = card;
-    this.cards[index].flipFaceUp();
+    this.cards[index].faceDown = false;
 
     return tmp;
   }
